@@ -7,6 +7,13 @@ int main(){
     mat = mat.multiply(mat2);
     mat.print(std::cout);
     mat = mat.multiply(2);
+    try{
+        mat.at(10, 10) = 3;
+    }
+    catch (std::out_of_range e){
+        std::cerr << e.what() << std::endl;
+
+    }
     mat.print(std::cout);
     //mat.colPrint(std::cout);
     std::cout<<"Done";
