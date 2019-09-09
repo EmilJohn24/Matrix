@@ -13,7 +13,6 @@ template<class T, template<class, class> class Container = std::vector, class Al
 class Matrix
 {
     public:
-
         typedef T value_type;
         typedef std::size_t size_type;
         typedef value_type& reference;
@@ -31,12 +30,12 @@ class Matrix
         typedef typename matrix_col_form::const_iterator const_col_iterator_type;
         typedef typename row_type::iterator inner_row_iterator_type;
 
-
         Matrix(const size_type rows = 0, const size_type cols = 0, const value_type& val = value_type());
         row_type& get_row_container(const size_type row);
         col_type& get_col_container(const size_type col);
         Matrix multiply(Matrix& right);
-
+        Matrix multiply(const value_type scalar);
+        Matrix scaled_identity_matrix(const value_type &scalar);
         void insert(row_iterator_type row_start, row_iterator_type row_end,
                         col_iterator_type col_start, col_iterator_type col_end, const value_type& val = value_type());
 
@@ -62,15 +61,15 @@ class Matrix
         matrix_row_form MatRow;
         matrix_col_form MatCol;
 };
-
-
-template class Matrix<int>;
-template class Matrix<float>;
 template<class T, template<class, class> class Container, class Alloc>typename Matrix<T, Container, Alloc>::value_ptr  mat_value_sum(typename Matrix<T, Container, Alloc>::value_ptr first,
                                 typename Matrix<T, Container, Alloc>::value_ptr second);
 
 template<class T, template<class, class> class Container, class Alloc>typename Matrix<T, Container, Alloc>::value_ptr  mat_value_prod(typename Matrix<T, Container, Alloc>::value_ptr first,
                                 typename Matrix<T, Container, Alloc>::value_ptr second);
+
+template class Matrix<int>;
+template class Matrix<float>;
+
 
 
 #endif // MATRIX_H

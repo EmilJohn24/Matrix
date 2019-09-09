@@ -55,16 +55,35 @@ void Matrix<T, Container, Alloc>::print(std::ostream& out, char col_sep, char ro
 
 }
 
-template<class T, template<class, class> class Container, class Alloc>typename Matrix<T, Container, Alloc>::value_ptr mat_value_sum(typename Matrix<T, Container, Alloc>::value_ptr first,
+template<class T, template<class, class> class Container, class Alloc>
+typename Matrix<T, Container, Alloc>::value_ptr mat_value_sum(typename Matrix<T, Container, Alloc>::value_ptr first,
                                 typename Matrix<T, Container, Alloc>::value_ptr second){
     return std::make_shared<T>(*first + *second);
 }
 
-template<class T, template<class, class> class Container, class Alloc>typename Matrix<T, Container, Alloc>::value_ptr  mat_value_prod(typename Matrix<T, Container, Alloc>::value_ptr first,
+template<class T, template<class, class> class Container, class Alloc>
+typename Matrix<T, Container, Alloc>::value_ptr  mat_value_prod(typename Matrix<T, Container, Alloc>::value_ptr first,
                                 typename Matrix<T, Container, Alloc>::value_ptr second){
     return std::make_shared<T>(*first * *second);
 }
 
+template<class T, template<class, class> class Container, class Alloc>
+Matrix<T, Container, Alloc> Matrix<T, Container, Alloc>::scaled_identity_matrix(const value_type &scalar){
+    size_type row_count = this->get_row_count();
+    Matrix identity_tmp(row_count, row_count);
+    for (size_type i = 0; i != row_count; i++){
+        identity_tmp.at(i, i) = scalar;
+    }
+
+    return identity_tmp;
+
+}
+
+template<class T, template<class, class> class Container, class Alloc>
+auto Matrix<T, Container, Alloc>::multiply(const value_type scalar) -> Matrix{
+    Matrix identity_tmp = scaled_identity_matrix(scalar);
+    return multiply(identity_tmp);
+}
 
 
 template<class T, template<class, class> class Container, class Alloc>
@@ -83,8 +102,6 @@ auto Matrix<T, Container, Alloc>::multiply(Matrix& right) -> Matrix{
 
 
     return product;
-
-
 
 }
 
