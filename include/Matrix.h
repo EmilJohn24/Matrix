@@ -68,15 +68,13 @@ class Matrix
 
     protected:
 
-        static size_matrix_mapper identity_matrix_cache;
     private:
         matrix_row_form MatRow;
         matrix_col_form MatCol;
         container_type RandAccessContainer;
 };
 
-template<class T, template<class, class> class Container, class Alloc>
-        typename Matrix<T, Container, Alloc>::size_matrix_mapper Matrix<T, Container, Alloc>::identity_matrix_cache;
+
 
 template<class T, template<class, class> class Container, class Alloc>typename Matrix<T, Container, Alloc>::value_ptr  mat_value_sum(typename Matrix<T, Container, Alloc>::value_ptr first,
                                 typename Matrix<T, Container, Alloc>::value_ptr second);

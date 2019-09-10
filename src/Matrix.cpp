@@ -76,26 +76,20 @@ typename Matrix<T, Container, Alloc>::value_ptr  mat_value_prod(typename Matrix<
 
 template<class T, template<class, class> class Container, class Alloc>
 Matrix<T, Container, Alloc>& Matrix<T, Container, Alloc>::scaled_identity_matrix(const value_type &scalar){
-    typedef Matrix<T, Container, Alloc> local_matrix_type;
-    local_matrix_type::size_matrix_mapper& local_matrix_cache = local_matrix_type::identity_matrix_cache;
     size_type row_count = this->get_row_count();
-    if (local_matrix_cache.find(row_count) != local_matrix_cache.end())
-                return local_matrix_type::identity_matrix_cache.at(row_count);
-
-    Matrix identity_tmp(row_count, row_count);
+    static Matrix identity_tmp;
+    identity_tmp = Matrix(row_count, row_count);
     for (size_type i = 0; i != row_count; i++){
         identity_tmp.at(i, i) = scalar;
     }
-    local_matrix_cache.insert(std::make_pair(std::move(row_count), std::move(identity_tmp)));
-    Matrix &identity_ref = local_matrix_cache.at(row_count);
-    return identity_ref;
+    return identity_tmp;
 
 }
 
 template<class T, template<class, class> class Container, class Alloc>
 auto Matrix<T, Container, Alloc>::multiply(const value_type scalar) -> Matrix{
     Matrix& identity_tmp = scaled_identity_matrix(scalar);
-    return multiply(identity_tmp);
+    return identity_tmp.multiply(*this);
 }
 
 
