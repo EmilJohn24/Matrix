@@ -42,7 +42,6 @@ class Matrix
         col_type& get_col_container(const size_type col);
         Matrix multiply(Matrix& right);
         Matrix multiply(const value_type scalar);
-        Matrix& scaled_identity_matrix(const value_type &scalar = int(1));
         void insert(row_iterator_type row_start, row_iterator_type row_end,
                         col_iterator_type col_start, col_iterator_type col_end, const value_type& val = value_type());
 
@@ -67,14 +66,16 @@ class Matrix
        // virtual ~Matrix();
 
     protected:
+        Matrix& scaled_identity_matrix(const value_type &scalar = int(1));
 
     private:
         matrix_row_form MatRow;
         matrix_col_form MatCol;
         container_type RandAccessContainer;
+        static size_matrix_mapper IdentityMatrixCache;
 };
 
-
+template<class T, template<class, class> class Container, class Alloc>typename Matrix<T, Container, Alloc>::size_matrix_mapper Matrix<T, Container, Alloc>::IdentityMatrixCache;
 
 template<class T, template<class, class> class Container, class Alloc>typename Matrix<T, Container, Alloc>::value_ptr  mat_value_sum(typename Matrix<T, Container, Alloc>::value_ptr first,
                                 typename Matrix<T, Container, Alloc>::value_ptr second);
